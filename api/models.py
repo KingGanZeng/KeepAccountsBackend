@@ -3,10 +3,10 @@ from django.db import models
 
 class User(models.Model):
     username = models.CharField(max_length=50)
-    portrait = models.URLField(required=False)
+    portrait = models.URLField(blank=True)
     uid = models.CharField(max_length=50)
-    budget = models.DecimalField(max_digits=9, decimal_places=2, required=False)
-    group_id_array = models.CharField(max_length=255, required=False)
+    budget = models.DecimalField(max_digits=9, decimal_places=2, null=True, blank=True)
+    group_id_array = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return self.uid
