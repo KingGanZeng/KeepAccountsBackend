@@ -28,7 +28,10 @@ class Record(models.Model):
     uid = models.CharField(max_length=50)
     username = models.CharField(max_length=50)
     book_id = models.IntegerField()
+    # 记录类型：income或expense
     record_type = models.CharField(max_length=50)
+    # 记账类型：food, shopping等
+    category = models.CharField(max_length=50)
     money = models.DecimalField(max_digits=9, decimal_places=2)
 
     def __str__(self):
