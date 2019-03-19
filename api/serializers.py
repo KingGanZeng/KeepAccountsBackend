@@ -4,19 +4,19 @@ from . import models
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ('uid', 'username', 'portrait', 'budget', 'group_id_array')
+        fields = ('uid', 'username', 'portrait', 'group_id_array')
         model = models.User
 
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ('book_id', 'uid', 'book_name', 'book_type')
+        fields = ('book_id', 'uid', 'book_name', 'book_type', 'budget')
         model = models.Book
 
 
 class RecordSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ('record_id', 'date', 'uid', 'username', 'book_id', 'record_type', 'money')
+        fields = ('record_id', 'date', 'uid', 'username', 'book_id', 'category', 'record_type', 'money')
         model = models.Record
 
 
