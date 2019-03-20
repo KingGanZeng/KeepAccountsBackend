@@ -18,6 +18,7 @@ class Book(models.Model):
     book_type = models.CharField(max_length=50)
     note = models.CharField(max_length=50, blank=True)
     budget = models.DecimalField(max_digits=9, null=True, blank=True, decimal_places=2)
+    create_timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.book_id)
@@ -33,6 +34,7 @@ class Record(models.Model):
     money = models.DecimalField(max_digits=9, decimal_places=2)
     category = models.CharField(max_length=45)
     note = models.CharField(max_length=45, blank=True)
+    create_timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.record_id

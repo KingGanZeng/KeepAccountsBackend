@@ -10,7 +10,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 
 class StandardPagination(PageNumberPagination):
-    page_size = 10
+    page_size = 100
     page_size_query_param = "page"
 
 
@@ -40,8 +40,9 @@ class BookCreate(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
 # 根据uid获取账本列表
 class BookList(generics.ListAPIView):
-    queryset = models.Book.objects.all()
+    queryset = models.Book.objects.all().order_by('-create_timestamp')
     serializer_class = serializers.BookSerializer
+    pagination_class = StandardPagination
     filter_fields = ['uid']
 
 
