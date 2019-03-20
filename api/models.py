@@ -4,15 +4,15 @@ from django.db import models
 class User(models.Model):
     username = models.CharField(max_length=50)
     portrait = models.URLField(blank=True, null=True)
-    uid = models.CharField(max_length=50)
-    group_id_array = models.CharField(max_length=255)
+    uid = models.CharField(max_length=50, unique=True)
+    group_id_array = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return str(self.uid)
 
 
 class Book(models.Model):
-    book_id = models.IntegerField()
+    book_id = models.AutoField(primary_key=True)
     uid = models.CharField(max_length=50)
     book_name = models.CharField(max_length=50)
     book_type = models.CharField(max_length=50)
