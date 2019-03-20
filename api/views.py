@@ -1,6 +1,7 @@
 # from django.shortcuts import render
 from . import models
 from . import serializers
+from . import filter
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
@@ -18,21 +19,29 @@ class UserList(generics.ListAPIView):
     serializer_class = serializers.UserSerializer
 
 
-class UserDetail(mixins.ListModelMixin,
-                 mixins.RetrieveModelMixin,
-                 mixins.UpdateModelMixin,
-                 mixins.DestroyModelMixin,
-                 mixins.CreateModelMixin,
-                 viewsets.GenericViewSet):
+# 注册用户信息
+class UserInfo(mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
+
+
+# 获取用户数据
+class UserDetail(generics.ListAPIView):
+    queryset = models.User.objects.all()
+    serializer_class = serializers.UserSerializer
+    filter_fields = ['uid']
+
+
+# 新建账本
+class BookCreate(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = models.Book.objects.all()
+    serializer_class = serializers.BookSerializer
 
 
 # 根据uid获取账本列表
 class BookList(generics.ListAPIView):
     queryset = models.Book.objects.all()
     serializer_class = serializers.BookSerializer
-    filter_backends = (DjangoFilterBackend, )
     filter_fields = ['uid']
 
 
