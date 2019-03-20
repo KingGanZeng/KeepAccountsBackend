@@ -3,23 +3,24 @@ from django.db import models
 
 class User(models.Model):
     username = models.CharField(max_length=50)
-    portrait = models.URLField(blank=True)
+    portrait = models.URLField(blank=True, null=True)
     uid = models.CharField(max_length=50)
-    budget = models.DecimalField(max_digits=9, decimal_places=2, null=True, blank=True)
-    group_id_array = models.CharField(max_length=255, blank=True)
+    group_id_array = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.uid
+        return str(self.uid)
 
 
 class Book(models.Model):
     book_id = models.IntegerField()
     uid = models.CharField(max_length=50)
     book_name = models.CharField(max_length=50)
-    book_type = models.TextField()
+    book_type = models.CharField(max_length=50)
+    note = models.CharField(max_length=50, blank=True)
+    budget = models.DecimalField(max_digits=9, null=True, blank=True, decimal_places=2)
 
     def __str__(self):
-        return self.book_id
+        return str(self.book_id)
 
 
 class Record(models.Model):
@@ -28,11 +29,10 @@ class Record(models.Model):
     uid = models.CharField(max_length=50)
     username = models.CharField(max_length=50)
     book_id = models.IntegerField()
-    # 记录类型：income或expense
     record_type = models.CharField(max_length=50)
-    # 记账类型：food, shopping等
-    category = models.CharField(max_length=50)
     money = models.DecimalField(max_digits=9, decimal_places=2)
+    category = models.CharField(max_length=45)
+    note = models.CharField(max_length=45, blank=True)
 
     def __str__(self):
         return self.record_id
