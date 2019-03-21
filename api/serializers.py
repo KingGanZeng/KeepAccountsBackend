@@ -16,7 +16,9 @@ class BookSerializer(serializers.ModelSerializer):
 
 class RecordSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ('record_id', 'date', 'uid', 'username', 'book_id', 'category', 'record_type', 'money')
+        fields = ('record_id', 'update_timestamp', 'uid',
+                  'username', 'book_id', 'category', 'record_type',
+                  'money', 'note', 'create_timestamp')
         model = models.Record
 
 

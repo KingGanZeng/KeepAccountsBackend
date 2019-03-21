@@ -3,7 +3,7 @@ from django.db import models
 
 class User(models.Model):
     username = models.CharField(max_length=50)
-    portrait = models.URLField(blank=True, null=True)
+    portrait = models.URLField(blank=True)
     uid = models.CharField(max_length=50, unique=True)
     group_id_array = models.CharField(max_length=255, blank=True)
 
@@ -26,7 +26,7 @@ class Book(models.Model):
 
 class Record(models.Model):
     record_id = models.AutoField(primary_key=True)
-    date = models.DateTimeField(auto_now_add=True)
+    update_timestamp = models.DateTimeField(auto_now_add=True)
     uid = models.CharField(max_length=50)
     username = models.CharField(max_length=50)
     book_id = models.IntegerField()
@@ -34,7 +34,7 @@ class Record(models.Model):
     money = models.DecimalField(max_digits=9, decimal_places=2)
     category = models.CharField(max_length=45)
     note = models.CharField(max_length=45, blank=True)
-    create_timestamp = models.DateTimeField(auto_now_add=True)
+    create_timestamp = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.record_id
