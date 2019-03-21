@@ -25,7 +25,7 @@ class Book(models.Model):
 
 
 class Record(models.Model):
-    record_id = models.CharField(max_length=50)
+    record_id = models.AutoField(primary_key=True)
     date = models.DateTimeField(auto_now_add=True)
     uid = models.CharField(max_length=50)
     username = models.CharField(max_length=50)

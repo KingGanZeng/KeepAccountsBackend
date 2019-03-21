@@ -46,12 +46,14 @@ class BookList(generics.ListAPIView):
     filter_fields = ['uid']
 
 
-# 根据book_id获取账单列表
-class RecordList(generics.ListAPIView):
-    queryset = models.Book.objects.all()
+# 根据book_id获取账单列表 || 插入账单信息
+class RecordList(mixins.CreateModelMixin,
+                 mixins.ListModelMixin,
+                 viewsets.GenericViewSet):
+    queryset = models.Record.objects.all()
     serializer_class = serializers.RecordSerializer
     filter_backends = (DjangoFilterBackend, )
-    filter_fields = ['book_id']
+    filter_class = filter.RecordFilter
 
 
 
