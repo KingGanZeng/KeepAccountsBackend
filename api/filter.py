@@ -12,9 +12,9 @@ class UserFilter(django_filters.FilterSet):
 
 class RecordFilter(django_filters.rest_framework.FilterSet):
     book_id = django_filters.CharFilter('book_id')
-    create_time = django_filters.DateTimeFilter('create_time', lookup_expr='icontains')
+    create_timestamp_min = django_filters.DateTimeFilter('create_timestamp', lookup_expr='gte')
+    create_timestamp_max = django_filters.DateTimeFilter('create_timestamp', lookup_expr='lt')
 
     class Meta:
         model = models.Record
-        fields = ['book_id', 'create_time']
-
+        fields = ['book_id', 'create_timestamp']
