@@ -22,6 +22,12 @@ class RecordSerializer(serializers.ModelSerializer):
         model = models.Record
 
 
+class SpecialBookSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('s_book_id', 'uid', 'username', 'book_name', 'book_type', 'budget')
+    model = models.SpecialBook
+
+
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('group_id', 'uid', 'group_name', 'is_admin')

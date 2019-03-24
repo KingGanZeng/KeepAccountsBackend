@@ -70,3 +70,24 @@ class RecordDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Record.objects.all()
     serializer_class = serializers.RecordSerializer
     lookup_field = 'record_id'
+
+
+# 新建特殊账本
+class SpecialBookCreate(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = models.Book.objects.all()
+    serializer_class = serializers.SpecialBookSerializer
+
+
+# 特殊账本查询
+class SpecialBookList(generics.ListAPIView):
+    queryset = models.SpecialBook.objects.all().order_by('-create_timestamp')
+    serializer_class = serializers.SpecialBookSerializer
+    pagination_class = StandardPagination
+    filter_fields = ['uid', 's_book_id']
+
+
+# 特殊账本的更新、删除
+class SpecialBookDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Book.objects.all()
+    serializer_class = serializers.BookSerializer
+    lookup_field = 's_book_id'

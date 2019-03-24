@@ -11,18 +11,6 @@ class User(models.Model):
         return str(self.uid)
 
 
-class Book(models.Model):
-    book_id = models.AutoField(primary_key=True)
-    uid = models.CharField(max_length=50)
-    book_name = models.CharField(max_length=50)
-    book_type = models.CharField(max_length=50)
-    note = models.CharField(max_length=50, blank=True)
-    budget = models.DecimalField(max_digits=9, null=True, blank=True, decimal_places=2)
-    create_timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return str(self.book_id)
-
 class Record(models.Model):
     record_id = models.AutoField(primary_key=True)
     update_timestamp = models.DateTimeField(auto_now_add=True)
@@ -37,6 +25,36 @@ class Record(models.Model):
 
     def __str__(self):
         return self.record_id
+
+
+class Book(models.Model):
+    book_id = models.AutoField(primary_key=True)
+    uid = models.CharField(max_length=50)
+    book_name = models.CharField(max_length=50)
+    book_type = models.CharField(max_length=50)
+    note = models.CharField(max_length=50, blank=True)
+    budget = models.DecimalField(max_digits=9, null=True, blank=True, decimal_places=2)
+    create_timestamp = models.DateTimeField(auto_now_add=True)
+    # record = models.ForeignKey(Record, blank=True, null=True,  on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.book_id)
+
+
+class SpecialBook(models.Model):
+    s_book_id = models.AutoField(primary_key=True)
+    s_book_label = models.CharField(max_length=200)
+    uid = models.CharField(max_length=50)
+    username = models.CharField(max_length=50)
+    book_name = models.CharField(max_length=50)
+    book_type = models.CharField(max_length=50)
+    book = models.ForeignKey(Book, to_field='book_id', blank=True, null=True,  on_delete=models.CASCADE)
+    budget = models.DecimalField(max_digits=9, null=True, blank=True, decimal_places=2)
+    create_timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.s_book_id)
+
 
 
 class Group(models.Model):
