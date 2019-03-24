@@ -23,7 +23,6 @@ class Book(models.Model):
     def __str__(self):
         return str(self.book_id)
 
-
 class Record(models.Model):
     record_id = models.AutoField(primary_key=True)
     update_timestamp = models.DateTimeField(auto_now_add=True)

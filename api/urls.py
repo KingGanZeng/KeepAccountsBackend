@@ -10,5 +10,7 @@ urlpatterns = [
     path('user/wechat-auth', views.UserDetail.as_view()),
     path('user/create', views.UserInfo.as_view({'post': 'create'})),
     path('createBook', views.BookCreate.as_view({'post': 'create'})),
-    path('getRecordData', views.RecordList.as_view({'post': 'create', 'get': 'list'})),
+    path('recordDataApi', views.RecordList.as_view({'post': 'create', 'get': 'list'})),
+    path('recordChangeApi/<int:record_id>', views.RecordDetail.as_view()),
+    path('bookChangeApi/<int:book_id>', views.BookDetail.as_view()),
 ]

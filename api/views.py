@@ -2,6 +2,7 @@
 from . import models
 from . import serializers
 from . import filter
+from django.http import HttpResponse
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
@@ -43,12 +44,20 @@ class BookList(generics.ListAPIView):
     queryset = models.Book.objects.all().order_by('-create_timestamp')
     serializer_class = serializers.BookSerializer
     pagination_class = StandardPagination
-    filter_fields = ['uid']
+    filter_fields = ['uid', 'book_id']
+
+
+# 更新、删除某一账单
+class BookDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Book.objects.all()
+    serializer_class = serializers.BookSerializer
+    lookup_field = 'book_id'
 
 
 # 根据book_id获取账单列表 || 插入账单信息
 class RecordList(mixins.CreateModelMixin,
                  mixins.ListModelMixin,
+                 mixins.UpdateModelMixin,
                  viewsets.GenericViewSet):
     queryset = models.Record.objects.all()
     serializer_class = serializers.RecordSerializer
@@ -56,4 +65,8 @@ class RecordList(mixins.CreateModelMixin,
     filter_class = filter.RecordFilter
 
 
-
+# 更新、删除某一账单
+class RecordDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Record.objects.all()
+    serializer_class = serializers.RecordSerializer
+    lookup_field = 'record_id'
