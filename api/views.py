@@ -88,6 +88,6 @@ class SpecialBookList(generics.ListAPIView):
 
 # 特殊账本的更新、删除
 class SpecialBookDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = models.Book.objects.all()
+    queryset = models.SpecialBook.objects.all()
     serializer_class = serializers.BookSerializer
     lookup_field = 's_book_id'

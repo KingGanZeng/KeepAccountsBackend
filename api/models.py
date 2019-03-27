@@ -43,18 +43,16 @@ class Book(models.Model):
 
 class SpecialBook(models.Model):
     s_book_id = models.AutoField(primary_key=True)
-    s_book_label = models.CharField(max_length=200)
     uid = models.CharField(max_length=50)
     username = models.CharField(max_length=50)
     book_name = models.CharField(max_length=50)
     book_type = models.CharField(max_length=50)
-    book = models.ForeignKey(Book, to_field='book_id', blank=True, null=True,  on_delete=models.CASCADE)
+    book = models.ManyToManyField(Book, blank=True)
     budget = models.DecimalField(max_digits=9, null=True, blank=True, decimal_places=2)
     create_timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.s_book_id)
-
 
 
 class Group(models.Model):

@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ('book_id', 'uid', 'book_name', 'book_type', 'budget')
+        fields = ('book_id', 'uid', 'book_name', 'book_type', 'budget', 'create_timestamp')
         model = models.Book
 
 
@@ -24,8 +24,9 @@ class RecordSerializer(serializers.ModelSerializer):
 
 class SpecialBookSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ('s_book_id', 'uid', 'username', 'book_name', 'book_type', 'budget')
-    model = models.SpecialBook
+        fields = ('s_book_id', 'book', 'book_name', 'book_type', 'budget',
+                  'create_timestamp', 'uid', 'username')
+        model = models.SpecialBook
 
 
 class GroupSerializer(serializers.ModelSerializer):
