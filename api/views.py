@@ -2,7 +2,9 @@
 from . import models
 from . import serializers
 from . import filter
-from django.http import HttpResponse
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
@@ -91,3 +93,15 @@ class SpecialBookDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.SpecialBook.objects.all()
     serializer_class = serializers.BookSerializer
     lookup_field = 's_book_id'
+
+# 新增特殊账本项目
+class SpecialBookUpdate(APIView):
+    def post(self, request):
+        data = request.data
+        s_book_id = data.get('s_book_id')
+        book_id = data.get('book_id')
+        special_obj = models.SpecialBook.objects.get(s_book_id=s_book_id)
+        book_obj = models.Book.objects.get(book_id=book_id)
+        special_obj.book.add(book_obj)
+        special_obj.save()
+        return Response({'hasAdd': True}, status=status.HTTP_201_CREATED)

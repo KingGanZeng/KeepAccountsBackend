@@ -33,6 +33,7 @@ class Book(models.Model):
     book_name = models.CharField(max_length=50)
     book_type = models.CharField(max_length=50)
     note = models.CharField(max_length=50, blank=True)
+    image_url = models.CharField(max_length=500, blank=True)
     budget = models.DecimalField(max_digits=9, null=True, blank=True, decimal_places=2)
     create_timestamp = models.DateTimeField(auto_now_add=True)
     # record = models.ForeignKey(Record, blank=True, null=True,  on_delete=models.CASCADE)
