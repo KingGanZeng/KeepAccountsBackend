@@ -94,6 +94,7 @@ class SpecialBookDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.BookSerializer
     lookup_field = 's_book_id'
 
+
 # 新增特殊账本项目
 class SpecialBookUpdate(APIView):
     def post(self, request):
