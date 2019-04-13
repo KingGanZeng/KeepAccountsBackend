@@ -55,10 +55,12 @@ class SpecialBook(models.Model):
         return str(self.s_book_id)
 
 
-# 组信息
+# 组成员信息
 class Group(models.Model):
-    group_id = models.IntegerField()
+    group_info_id = models.AutoField(primary_key=True)
+    group_id = models.CharField(max_length=50)
     uid = models.CharField(max_length=50)
+    portrait = models.URLField(blank=True)
     is_admin = models.BooleanField()
 
     def __str__(self):
@@ -100,4 +102,4 @@ class Collection(models.Model):
     uid = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.collection_id
+        return self.info_id

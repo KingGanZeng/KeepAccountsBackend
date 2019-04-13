@@ -20,5 +20,9 @@ urlpatterns = [
     path('createSpecialBook', views.SpecialBookCreate.as_view({'post': 'create'})),
     path('getSpecialBookList', views.SpecialBookList.as_view()),
     path('changeSpecialBook/<int:s_book_id>', views.SpecialBookDetail.as_view()),
-    path('addSpecialBookItem', views.SpecialBookUpdate.as_view())
+    path('addSpecialBookItem', views.SpecialBookUpdate.as_view()),
+    # 小组相关API
+    path('createGroupMember', views.GroupCreate.as_view({'post': 'create'})),
+    path('getGroupMembers', views.GroupList.as_view()),
+    path('changeGroupMember/<int:group_info_id>', views.GroupDetail.as_view()),
 ]

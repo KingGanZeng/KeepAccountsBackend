@@ -106,3 +106,23 @@ class SpecialBookUpdate(APIView):
         special_obj.book.add(book_obj)
         special_obj.save()
         return Response({'hasAdd': True}, status=status.HTTP_201_CREATED)
+
+
+# 新建小组成员信息
+class GroupCreate(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = models.Group.objects.all()
+    serializer_class = serializers.GroupSerializer
+
+
+# 根据gid获取组员信息
+class GroupList(generics.ListAPIView):
+    queryset = models.Group.objects.all()
+    serializer_class = serializers.GroupSerializer
+    filter_fields = ['group_info_id', 'uid', 'group_id']
+
+
+# 更新、删除某一组员信息
+class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Group.objects.all()
+    serializer_class = serializers.GroupSerializer
+    lookup_field = 'group_info_id'

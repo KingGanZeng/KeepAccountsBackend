@@ -34,8 +34,8 @@ class SpecialBookSerializer(serializers.ModelSerializer):
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ('group_id', 'uid', 'is_admin')
-    model = models.Group
+        fields = ('group_info_id', 'group_id', 'uid', 'is_admin', 'portrait')
+        model = models.Group
 
 
 class WishSerializer(serializers.ModelSerializer):
@@ -43,18 +43,18 @@ class WishSerializer(serializers.ModelSerializer):
         fields = ('wish_id', 'wish_type', 'wish_name',
                   'uid', 'weight', 'create_timestamp',
                   'update_timestamp', 'note', 'money', 'is_finished')
-    model = models.Wish
+        model = models.Wish
 
 
 class RecommendedInfoSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('info_id', 'info_name', 'info_content',
                   'climb_url', 'create_timestamp')
-    model = models.RecommendedInfo
+        model = models.RecommendedInfo
 
 
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('info_id', 'uid')
-    model = models.Collection
+        model = models.Collection
 
