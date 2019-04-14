@@ -34,7 +34,7 @@ class SpecialBookSerializer(serializers.ModelSerializer):
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ('group_info_id', 'group_id', 'uid', 'is_admin', 'portrait')
+        fields = ('group_info_id', 'group_id', 'uid', 'username', 'is_admin', 'portrait')
         model = models.Group
 
 

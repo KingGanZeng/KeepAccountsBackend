@@ -60,6 +60,7 @@ class Group(models.Model):
     group_info_id = models.AutoField(primary_key=True)
     group_id = models.CharField(max_length=50)
     uid = models.CharField(max_length=50)
+    username = models.CharField(blank=True, max_length=50)
     portrait = models.URLField(blank=True)
     is_admin = models.BooleanField()
 
