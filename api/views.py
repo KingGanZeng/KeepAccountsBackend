@@ -49,7 +49,7 @@ class BookList(generics.ListAPIView):
     filter_fields = ['uid', 'book_id']
 
 
-# 更新、删除某一账单
+# 更新、删除某一账本
 class BookDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Book.objects.all()
     serializer_class = serializers.BookSerializer
@@ -126,3 +126,23 @@ class GroupDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Group.objects.all()
     serializer_class = serializers.GroupSerializer
     lookup_field = 'group_info_id'
+
+
+# 新建愿望信息
+class WishCreate(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = models.Wish.objects.all()
+    serializer_class = serializers.WishSerializer
+
+
+# 根据uid获取所有愿望
+class WishList(generics.ListAPIView):
+    queryset = models.Wish.objects.all()
+    serializer_class = serializers.WishSerializer
+    filter_fields = ['uid']
+
+
+# 更新、删除某一愿望信息
+class WishDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Wish.objects.all()
+    serializer_class = serializers.WishSerializer
+    lookup_field = 'wish_id'

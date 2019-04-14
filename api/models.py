@@ -98,8 +98,8 @@ class RecommendedInfo(models.Model):
 
 # 收藏夹
 class Collection(models.Model):
-    info_id = models.ManyToManyField(RecommendedInfo, blank=True)
+    recommend_info_id = models.ManyToManyField(RecommendedInfo, blank=True)
     uid = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.info_id
+        return self.recommend_info_id
