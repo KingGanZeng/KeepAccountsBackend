@@ -23,7 +23,7 @@ class Record(models.Model):
     uid = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.record_id
+        return str(self.record_id)
 
 
 class Book(models.Model):
@@ -71,18 +71,19 @@ class Group(models.Model):
 # 愿望信息
 class Wish(models.Model):
     wish_id = models.AutoField(primary_key=True)
-    wish_type = models.CharField(max_length=50)
-    wish_name = models.CharField(max_length=50)
     uid = models.CharField(max_length=50)
-    weight = models.IntegerField()
-    create_timestamp = models.DateTimeField(null=True)
-    update_timestamp = models.DateTimeField(null=True)
-    note = models.CharField(max_length=45)
+    wish_name = models.CharField(max_length=50)
+    end_time = models.DateTimeField(null=True)
+    wish_first_category = models.CharField(max_length=50)
+    wish_second_category = models.CharField(max_length=50)
     money = models.DecimalField(max_digits=9, decimal_places=2)
+    note = models.CharField(max_length=45)
+    weight = models.IntegerField()
     is_finished = models.BooleanField()
+    create_timestamp = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.wish_id
+        return str(self.wish_id)
 
 
 # 推荐信息存放
@@ -94,7 +95,7 @@ class RecommendedInfo(models.Model):
     create_timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.info_id
+        return str(self.info_id)
 
 
 # 收藏夹

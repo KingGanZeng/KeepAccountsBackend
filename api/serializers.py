@@ -40,9 +40,10 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class WishSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ('wish_id', 'wish_type', 'wish_name',
-                  'uid', 'weight', 'create_timestamp',
-                  'update_timestamp', 'note', 'money', 'is_finished')
+        fields = ('wish_id', 'uid', 'wish_name',
+                  'end_time', 'wish_first_category', 'wish_second_category',
+                  'money', 'note', 'weight', 'is_finished',
+                  'create_timestamp', 'update_timestamp')
         model = models.Wish
 
 

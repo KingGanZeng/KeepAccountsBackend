@@ -134,11 +134,11 @@ class WishCreate(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = serializers.WishSerializer
 
 
-# 根据uid获取所有愿望
+# 根据uid获取所有愿望/获取用户某一愿望
 class WishList(generics.ListAPIView):
-    queryset = models.Wish.objects.all()
+    queryset = models.Wish.objects.all().order_by('is_finished')
     serializer_class = serializers.WishSerializer
-    filter_fields = ['uid']
+    filter_fields = ['uid', 'wish_id']
 
 
 # 更新、删除某一愿望信息
@@ -146,3 +146,5 @@ class WishDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Wish.objects.all()
     serializer_class = serializers.WishSerializer
     lookup_field = 'wish_id'
+
+

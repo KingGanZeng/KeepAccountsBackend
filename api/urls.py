@@ -25,4 +25,8 @@ urlpatterns = [
     path('createGroupMember', views.GroupCreate.as_view({'post': 'create'})),
     path('getGroupMembers', views.GroupList.as_view()),
     path('changeGroupMember/<int:group_info_id>', views.GroupDetail.as_view()),
+    # 小组相关API
+    path('createWish', views.WishCreate.as_view({'post': 'create'})),
+    path('getWishList', views.WishList.as_view()),
+    path('changeWish/<int:wish_id>', views.WishDetail.as_view()),
 ]
