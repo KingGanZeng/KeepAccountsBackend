@@ -148,10 +148,17 @@ class WishDetail(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'wish_id'
 
 
+class InfoPageNumberPagination(PageNumberPagination):
+    page_size = 3
+    page_query_param = "page"
+    page_size_query_param = "page_size"
+
+
 # 根据info属性查看某条信息
 class RecommendInfoList(generics.ListAPIView):
     queryset = models.RecommendedInfo.objects.all()
     serializer_class = serializers.RecommendedInfoSerializer
+    pagination_class = InfoPageNumberPagination
     filter_fields = ['info_id', 'first_category', 'second_category']
 
 
