@@ -186,3 +186,13 @@ class CollectionUpdate(APIView):
         collection_obj.info_id.add(recommend_obj)
         collection_obj.save()
         return Response({'hasCollected': True}, status=status.HTTP_201_CREATED)
+
+    def delete(self, request):
+        data = request.data
+        collection_id = data.get('collection_id')
+        info_id = data.get('info_id')
+        collection_obj = models.Collection.objects.get(collection_id=collection_id)
+        recommend_obj = models.RecommendedInfo.objects.get(info_id=info_id)
+        collection_obj.info_id.remove(recommend_obj)
+        collection_obj.save()
+        return Response({'hasDelete': True}, status=status.HTTP_201_CREATED)

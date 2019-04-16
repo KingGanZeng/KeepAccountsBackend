@@ -35,5 +35,5 @@ urlpatterns = [
     path('createCollection', views.CollectionCreate.as_view({'post': 'create'})),
     path('getCollectionList', views.CollectionList.as_view()),
     path('changeCollection<int:collection_id>', views.CollectionDetail.as_view()),
-    path('addCollectionItem', views.CollectionUpdate.as_view()),
+    path('editCollectionItem', views.CollectionUpdate.as_view()),
 ]

@@ -57,6 +57,6 @@ class RecommendedInfoSerializer(serializers.ModelSerializer):
 
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = ('info_id', 'uid')
+        fields = ('info_id', 'collection_id', 'create_timestamp', 'uid')
         model = models.Collection
 
