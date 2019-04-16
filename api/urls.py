@@ -29,4 +29,11 @@ urlpatterns = [
     path('createWish', views.WishCreate.as_view({'post': 'create'})),
     path('getWishList', views.WishList.as_view()),
     path('changeWish/<int:wish_id>', views.WishDetail.as_view()),
+    # 推荐信息获取API
+    path('getRecommendInfoList', views.RecommendInfoList.as_view()),
+    # 收藏相关API
+    path('createCollection', views.CollectionCreate.as_view({'post': 'create'})),
+    path('getCollectionList', views.CollectionList.as_view()),
+    path('changeCollection<int:collection_id>', views.CollectionDetail.as_view()),
+    path('addCollectionItem', views.CollectionUpdate.as_view()),
 ]

@@ -50,7 +50,8 @@ class WishSerializer(serializers.ModelSerializer):
 class RecommendedInfoSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('info_id', 'info_name', 'info_content',
-                  'climb_url', 'create_timestamp')
+                  'climb_url', 'create_timestamp',
+                  'first_category', 'second_category')
         model = models.RecommendedInfo
 
 

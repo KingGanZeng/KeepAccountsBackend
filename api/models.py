@@ -91,6 +91,8 @@ class RecommendedInfo(models.Model):
     info_id = models.AutoField(primary_key=True)
     info_name = models.CharField(max_length=50)
     info_content = models.TextField()
+    first_category = models.CharField(blank=True, max_length=50)
+    second_category = models.CharField(blank=True, max_length=50)
     climb_url = models.URLField(blank=True)
     create_timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -100,8 +102,10 @@ class RecommendedInfo(models.Model):
 
 # 收藏夹
 class Collection(models.Model):
-    recommend_info_id = models.ManyToManyField(RecommendedInfo, blank=True)
+    collection_id = models.AutoField(primary_key=True)
+    info_id = models.ManyToManyField(RecommendedInfo, blank=True)
     uid = models.CharField(max_length=50)
+    create_timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.recommend_info_id
+        return str(self.collection_id)

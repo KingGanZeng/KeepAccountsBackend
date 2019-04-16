@@ -148,3 +148,41 @@ class WishDetail(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'wish_id'
 
 
+# 根据info属性查看某条信息
+class RecommendInfoList(generics.ListAPIView):
+    queryset = models.RecommendedInfo.objects.all()
+    serializer_class = serializers.RecommendedInfoSerializer
+    filter_fields = ['info_id', 'first_category', 'second_category']
+
+
+# 新建收藏信息
+class CollectionCreate(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = models.Collection.objects.all()
+    serializer_class = serializers.CollectionSerializer
+
+
+# 根据uid获取所有收藏信息
+class CollectionList(generics.ListAPIView):
+    queryset = models.Collection.objects.all().order_by('-create_timestamp')
+    serializer_class = serializers.CollectionSerializer
+    filter_fields = ['uid', 'collection_id']
+
+
+# 更新、删除某一收藏信息
+class CollectionDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Collection.objects.all()
+    serializer_class = serializers.CollectionSerializer
+    lookup_field = 'collection_id'
+
+
+# 新增特殊账本项目
+class CollectionUpdate(APIView):
+    def post(self, request):
+        data = request.data
+        collection_id = data.get('collection_id')
+        info_id = data.get('info_id')
+        collection_obj = models.Collection.objects.get(collection_id=collection_id)
+        recommend_obj = models.RecommendedInfo.objects.get(info_id=info_id)
+        collection_obj.info_id.add(recommend_obj)
+        collection_obj.save()
+        return Response({'hasCollected': True}, status=status.HTTP_201_CREATED)
