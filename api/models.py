@@ -13,6 +13,7 @@ class User(models.Model):
 class Record(models.Model):
     record_id = models.AutoField(primary_key=True)
     record_type = models.CharField(max_length=50)
+    book_type = models.CharField(max_length=50, blank=True)
     username = models.CharField(max_length=50)
     book_id = models.IntegerField()
     category = models.CharField(max_length=45)
@@ -109,3 +110,13 @@ class Collection(models.Model):
 
     def __str__(self):
         return str(self.collection_id)
+
+
+# 账单记录推荐信息
+class RecordRecommend(models.Model):
+    record_recommend_id = models.AutoField(primary_key=True)
+    book_type = models.CharField(max_length=50)
+    record_recommend = models.TextField(blank=True)
+
+    def __str__(self):
+        return str(self.record_recommend_id)

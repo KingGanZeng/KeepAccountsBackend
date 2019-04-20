@@ -20,7 +20,7 @@ class RecordSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('record_id', 'update_timestamp', 'uid',
                   'username', 'book_id', 'category', 'record_type',
-                  'money', 'note', 'create_timestamp')
+                  'money', 'note', 'create_timestamp', 'book_type')
         model = models.Record
 
 
@@ -60,3 +60,8 @@ class CollectionSerializer(serializers.ModelSerializer):
         fields = ('info_id', 'collection_id', 'create_timestamp', 'uid')
         model = models.Collection
 
+
+class RecordRecommendSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('record_recommend_id', 'book_type', 'record_recommend')
+        model = models.RecordRecommend

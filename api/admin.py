@@ -7,6 +7,7 @@ from . models import Group
 from . models import Wish
 from . models import RecommendedInfo
 from . models import Collection
+from . models import RecordRecommend
 
 admin.site.register(User)
 admin.site.register(Book)
@@ -16,3 +17,4 @@ admin.site.register(Group)
 admin.site.register(Wish)
 admin.site.register(RecommendedInfo)
 admin.site.register(Collection)
+admin.site.register(RecordRecommend)

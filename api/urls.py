@@ -25,7 +25,7 @@ urlpatterns = [
     path('createGroupMember', views.GroupCreate.as_view({'post': 'create'})),
     path('getGroupMembers', views.GroupList.as_view()),
     path('changeGroupMember/<int:group_info_id>', views.GroupDetail.as_view()),
-    # 小组相关API
+    # 愿望相关API
     path('createWish', views.WishCreate.as_view({'post': 'create'})),
     path('getWishList', views.WishList.as_view()),
     path('changeWish/<int:wish_id>', views.WishDetail.as_view()),
@@ -36,4 +36,6 @@ urlpatterns = [
     path('getCollectionList', views.CollectionList.as_view()),
     path('changeCollection<int:collection_id>', views.CollectionDetail.as_view()),
     path('editCollectionItem', views.CollectionUpdate.as_view()),
+    # 获取推荐账单模板
+    path('getRecordRecommendList', views.RecordRecommendObj.as_view()),
 ]

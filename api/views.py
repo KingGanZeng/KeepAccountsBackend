@@ -203,3 +203,10 @@ class CollectionUpdate(APIView):
         collection_obj.info_id.remove(recommend_obj)
         collection_obj.save()
         return Response({'hasDelete': True}, status=status.HTTP_201_CREATED)
+
+
+# 根据uid获取所有收藏信息
+class RecordRecommendObj(generics.ListAPIView):
+    queryset = models.RecordRecommend.objects.all()
+    serializer_class = serializers.RecordRecommendSerializer
+    filter_fields = ['book_type']
