@@ -210,3 +210,8 @@ class RecordRecommendObj(generics.ListAPIView):
     queryset = models.RecordRecommend.objects.all()
     serializer_class = serializers.RecordRecommendSerializer
     filter_fields = ['book_type']
+
+
+class FileUpload(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Files.objects.all()
+    serializer_class = serializers.FilesSerializer

@@ -11,6 +11,8 @@ djangorestframework = "*"
 django-filter = "*"
 djangorestframework-jwt = "*"
 requests = "*"
+pillow = "*"
+boto3 = "*"
 
 [requires]
 python_version = "3.6"

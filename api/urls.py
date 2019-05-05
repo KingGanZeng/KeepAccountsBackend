@@ -3,6 +3,7 @@ from django.urls import path
 from rest_framework_jwt.views import obtain_jwt_token
 
 
+
 urlpatterns = [
     # 用户信息API
     path('login', obtain_jwt_token),
@@ -38,4 +39,6 @@ urlpatterns = [
     path('editCollectionItem', views.CollectionUpdate.as_view()),
     # 获取推荐账单模板
     path('getRecordRecommendList', views.RecordRecommendObj.as_view()),
+    # 上传图片文件
+    path('uploadImageFile', views.FileUpload.as_view()),
 ]

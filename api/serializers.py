@@ -65,3 +65,9 @@ class RecordRecommendSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('record_recommend_id', 'book_type', 'record_recommend')
         model = models.RecordRecommend
+
+
+class FilesSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('file_id', 'file_name', 'file')
+        model = models.Files

@@ -120,3 +120,13 @@ class RecordRecommend(models.Model):
 
     def __str__(self):
         return str(self.record_recommend_id)
+
+
+# 图片上传
+class Files(models.Model):
+    file_id = models.AutoField(primary_key=True)
+    file_name = models.CharField(max_length=100, blank=True)
+    file = models.ImageField(upload_to="%Y%m%d/")
+
+    def __str__(self):
+        return str(self.file_id)
