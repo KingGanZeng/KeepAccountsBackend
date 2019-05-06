@@ -18,6 +18,13 @@ class RecommendController:
 
     def __init__(self):
         print("MyClass类的构造方法被调用！")
+        self.user_category = dict()
+        # 用户-账本类型矩阵
+        self.user_book = dict()
+        # 账本类型-账单类别矩阵
+        self.book_category = dict()
+        # 账单类别-账本类型矩阵
+        self.category_book = dict()
 
     def addValueToMat(self, mat, key, value):
         if key not in mat:
@@ -43,12 +50,6 @@ class RecommendController:
             user = record_item[2]
             category = record_item[7]
             book = record_item[10]
-            print(self.user_category)
-            # 将数据存入矩阵
-            # self.addValueToMat(self.user_category, user)
-            # self.addValueToMat(self.user_book, user)
-            # self.addValueToMat(self.book_category, book)
-            # self.addValueToMat(self.category_book, category)
             self.addValueToMat(self.user_category, user, category)
             self.addValueToMat(self.user_book, user, book)
             self.addValueToMat(self.book_category, book, category)
@@ -110,5 +111,5 @@ def my_job():
 
 
 sched = BlockingScheduler()
-sched.add_job(my_job, 'interval', seconds=60)
+sched.add_job(my_job, 'interval', seconds=300)
 sched.start()
