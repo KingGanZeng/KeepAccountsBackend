@@ -17,6 +17,7 @@ urlpatterns = [
     # 账单流水API
     path('recordDataApi', views.RecordList.as_view({'post': 'create', 'get': 'list'})),
     path('recordChangeApi/<int:record_id>', views.RecordDetail.as_view()),
+    path('getAllBookItemRecords', views.AllBookItemRecordList.as_view()),
     # 特殊账本相关API
     path('createSpecialBook', views.SpecialBookCreate.as_view({'post': 'create'})),
     path('getSpecialBookList', views.SpecialBookList.as_view()),

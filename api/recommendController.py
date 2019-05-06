@@ -2,6 +2,8 @@ import pdb
 import math
 import sqlite3
 import json
+import time
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 
 class RecommendController:
@@ -14,7 +16,10 @@ class RecommendController:
     # 账单类别-账本类型矩阵
     category_book = dict()
 
-    def addValueToMat(mat, key, value):
+    def __init__(self):
+        print("MyClass类的构造方法被调用！")
+
+    def addValueToMat(self, mat, key, value):
         if key not in mat:
             mat[key] = dict()
             mat[key][value] = 1
@@ -38,11 +43,16 @@ class RecommendController:
             user = record_item[2]
             category = record_item[7]
             book = record_item[10]
+            print(self.user_category)
             # 将数据存入矩阵
-            RecommendController.addValueToMat(RecommendController.user_category, user, category)
-            RecommendController.addValueToMat(RecommendController.user_book, user, book)
-            RecommendController.addValueToMat(RecommendController.book_category, book, category)
-            RecommendController.addValueToMat(RecommendController.category_book, category, book)
+            # self.addValueToMat(self.user_category, user)
+            # self.addValueToMat(self.user_book, user)
+            # self.addValueToMat(self.book_category, book)
+            # self.addValueToMat(self.category_book, category)
+            self.addValueToMat(self.user_category, user, category)
+            self.addValueToMat(self.user_book, user, book)
+            self.addValueToMat(self.book_category, book, category)
+            self.addValueToMat(self.category_book, category, book)
 
     # 计算推荐列表
     def Recommend(user):
@@ -59,7 +69,7 @@ class RecommendController:
         return sorted(recommend_list.items(), key=lambda a: a[1], reverse=True)
 
     # 统计每个账本类别的热门账单
-    def CategoryPopularity(selft):
+    def CategoryPopularity(self):
         bookFreq = {}
         for book in RecommendController.book_category.keys():
             categoryFreq = {}
@@ -74,20 +84,31 @@ class RecommendController:
         c = db_data.cursor()
         for item in book_categoryFreq:
             json_record_recommend = json.dumps(book_categoryFreq[item])
-            print(item)
-            print(json_record_recommend)
             sql = "update api_recordrecommend set record_recommend = '%s' where book_type = '%s'"
             c.execute(sql % (json_record_recommend, item))
+            db_data.commit()
         c.execute("select * from api_recordrecommend")
         result = c.fetchall()
+        print('*******')
         print(result)
         db_data.close()
 
 
-recommend = RecommendController()
-recommend.InitStat()
+    def __del__(self):
+        class_name = self.__class__.__name__
+        print(class_name, "销毁")
 
-categoryFreq = recommend.CategoryPopularity()
-print("热门标签：%s" % categoryFreq)
-recommend.UpdatePopularity(categoryFreq)
-print("热门标签：%s" % categoryFreq)
+
+def my_job():
+    recommend = RecommendController()
+    recommend.InitStat()
+    categoryFreq = recommend.CategoryPopularity()
+    # print("热门标签：%s" % categoryFreq)
+    recommend.UpdatePopularity(categoryFreq)
+    print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+    del recommend
+
+
+sched = BlockingScheduler()
+sched.add_job(my_job, 'interval', seconds=60)
+sched.start()

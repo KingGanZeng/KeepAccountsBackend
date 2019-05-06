@@ -1,7 +1,8 @@
 # from django.shortcuts import render
+from django.utils import timezone
 from . import models
-from . import serializers
 from . import filter
+from . import serializers
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,6 +11,8 @@ from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
 
 
 class StandardPagination(PageNumberPagination):
@@ -65,6 +68,47 @@ class RecordList(mixins.CreateModelMixin,
     serializer_class = serializers.RecordSerializer
     filter_backends = (DjangoFilterBackend, )
     filter_class = filter.RecordFilter
+
+
+# 根据账本id查询项目及账单信息
+class AllBookItemRecordList(generics.ListAPIView):
+    def get(self, request, *args, **kwargs):
+        book_id = request.query_params.dict()
+        book = models.SpecialBook.objects.filter(s_book_id=book_id['bookId'])
+        serialized_book = serializers.SpecialBookSerializer(book, many=True)
+        serialized_book = serialized_book.data
+        item_list = serialized_book[0]['book']
+        record_set = dict()
+        # 查询时间为最近一个月
+        time_now = timezone.now().strftime("%Y-%m-%d")
+        time_past_year = int(time_now.split('-')[0])
+        time_past_month = int(time_now.split('-')[1])
+        if time_past_month == 1:
+            time_past_year = int(time_now.split('-')[0]) - 1
+            time_past_month = 12
+        time_past_month_now = str(time_past_year) + '-' + str(time_past_month) + '-' + time_now.split('-')[2]
+
+        for item in item_list:
+            tmp_item = models.Record.objects.filter(book_id=item, create_timestamp__range=[time_past_month_now, time_now])
+            serialized_item = serializers.RecordSerializer(tmp_item, many=True)
+            serialized_item = serialized_item.data
+            for record_item in serialized_item:
+                record_category = record_item['category']
+                if record_category in record_set.keys():
+                    record_set[record_category] = {
+                        'record_type': record_item['record_type'],
+                        'usage': record_set[record_category]['usage'] + 1
+                    }
+                else:
+                    record_set[record_category] = {
+                        'record_type': record_item['record_type'],
+                        'usage': 1
+                    }
+        record_set = sorted(record_set.items(), key=lambda item: item[1]['usage'], reverse = True)
+        return Response({
+            'total': len(record_set),
+            'record_set': record_set,
+        }, status=status.HTTP_200_OK)
 
 
 # 更新、删除某一账单

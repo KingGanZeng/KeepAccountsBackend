@@ -13,6 +13,7 @@ djangorestframework-jwt = "*"
 requests = "*"
 pillow = "*"
 boto3 = "*"
+apscheduler = "*"
 
 [requires]
 python_version = "3.6"
