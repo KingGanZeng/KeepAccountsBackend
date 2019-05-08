@@ -10,6 +10,14 @@
 
 ---
 
+**后台启动**
+- 安装python配置，运行```pipenv install```（该步骤建议在vpn环境下运行，因为资源库在国外）
+- 运行推荐模板生成模块，输入```python recommendController.py```
+- 另起一个terminal，用于运行后台系统，输入```python manage.py makemigrations```,回车后再输入```python manage.py migrate```,
+上述两个命令用于数据库的更新与格式化，最后输入```python manage.py runserver```启动数据库。
+- 后台系统运行在`127.0.0.1:8000`，用户可通过`127.0.0.1:8000/admin`查看管理员系统
+
+
 **后台调试前置条件**
 
 - 修改```host```文件：<a href="https://blog.csdn.net/dingqk/article/details/77982910">如何修改mac的host文件</a>
