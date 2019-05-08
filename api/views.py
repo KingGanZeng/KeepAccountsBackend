@@ -73,13 +73,13 @@ class RecordList(mixins.CreateModelMixin,
 # 根据账本id查询项目及账单信息
 class AllBookItemRecordList(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
-        book_id = request.query_params.dict()
-        book = models.SpecialBook.objects.filter(s_book_id=book_id['bookId'])
+        book_params = request.query_params.dict()
+        book = models.SpecialBook.objects.filter(s_book_id=book_params['bookId'])
         serialized_book = serializers.SpecialBookSerializer(book, many=True)
         serialized_book = serialized_book.data
         item_list = serialized_book[0]['book']
         record_set = dict()
-        # 查询时间为最近一个月
+
         time_now = timezone.now().strftime("%Y-%m-%d")
         time_past_year = int(time_now.split('-')[0])
         time_past_month = int(time_now.split('-')[1])

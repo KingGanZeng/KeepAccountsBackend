@@ -7,24 +7,8 @@ from apscheduler.schedulers.blocking import BlockingScheduler
 
 
 class RecommendController:
-    # 用户-类别矩阵
-    user_category = dict()
-    # 用户-账本类型矩阵
-    user_book = dict()
-    # 账本类型-账单类别矩阵
-    book_category = dict()
-    # 账单类别-账本类型矩阵
-    category_book = dict()
-
     def __init__(self):
         print("MyClass类的构造方法被调用！")
-        self.user_category = dict()
-        # 用户-账本类型矩阵
-        self.user_book = dict()
-        # 账本类型-账单类别矩阵
-        self.book_category = dict()
-        # 账单类别-账本类型矩阵
-        self.category_book = dict()
 
     def addValueToMat(self, mat, key, value):
         if key not in mat:
@@ -37,6 +21,14 @@ class RecommendController:
                 mat[key][value] += 1
 
     def InitStat(self):
+        # 用户-类别矩阵
+        user_category = dict()
+        # 用户-账本类型矩阵
+        user_book = dict()
+        # 账本类型-账单类别矩阵
+        book_category = dict()
+        # 账单类别-账本类型矩阵
+        category_book = dict()
         db_data = sqlite3.connect("../db.sqlite3")
         # 创建游标
         c = db_data.cursor()
@@ -44,16 +36,17 @@ class RecommendController:
         c.execute("select * from api_record")
         # 获取结果，这里需要优化，相当于每次都跑全量数据
         result = c.fetchall()
-        # 关闭连接
-        db_data.close()
         for record_item in result:
             user = record_item[2]
             category = record_item[7]
             book = record_item[10]
-            self.addValueToMat(self.user_category, user, category)
-            self.addValueToMat(self.user_book, user, book)
-            self.addValueToMat(self.book_category, book, category)
-            self.addValueToMat(self.category_book, category, book)
+            self.addValueToMat(user_category, user, category)
+            self.addValueToMat(user_book, user, book)
+            self.addValueToMat(book_category, book, category)
+            self.addValueToMat(category_book, category, book)
+        # 关闭连接
+        db_data.close()
+        return book_category
 
     # 计算推荐列表
     def Recommend(user):
@@ -70,11 +63,11 @@ class RecommendController:
         return sorted(recommend_list.items(), key=lambda a: a[1], reverse=True)
 
     # 统计每个账本类别的热门账单
-    def CategoryPopularity(self):
+    def CategoryPopularity(self, book_category):
         bookFreq = {}
-        for book in RecommendController.book_category.keys():
+        for book in book_category.keys():
             categoryFreq = {}
-            for category, value in RecommendController.book_category[book].items():
+            for category, value in book_category[book].items():
                 categoryFreq[category] = value
             bookFreq[book] = sorted(categoryFreq.items(), key=lambda a: a[1], reverse=True)
         return bookFreq
@@ -84,6 +77,7 @@ class RecommendController:
         db_data = sqlite3.connect("../db.sqlite3")
         c = db_data.cursor()
         for item in book_categoryFreq:
+            print(book_categoryFreq[item])
             json_record_recommend = json.dumps(book_categoryFreq[item])
             sql = "update api_recordrecommend set record_recommend = '%s' where book_type = '%s'"
             c.execute(sql % (json_record_recommend, item))
@@ -102,8 +96,8 @@ class RecommendController:
 
 def my_job():
     recommend = RecommendController()
-    recommend.InitStat()
-    categoryFreq = recommend.CategoryPopularity()
+    book_category = recommend.InitStat()
+    categoryFreq = recommend.CategoryPopularity(book_category)
     # print("热门标签：%s" % categoryFreq)
     recommend.UpdatePopularity(categoryFreq)
     print(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
@@ -111,5 +105,5 @@ def my_job():
 
 
 sched = BlockingScheduler()
-sched.add_job(my_job, 'interval', seconds=300)
+sched.add_job(my_job, 'interval', seconds=5)
 sched.start()
