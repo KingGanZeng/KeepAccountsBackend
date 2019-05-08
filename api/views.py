@@ -64,7 +64,7 @@ class RecordList(mixins.CreateModelMixin,
                  mixins.ListModelMixin,
                  mixins.UpdateModelMixin,
                  viewsets.GenericViewSet):
-    queryset = models.Record.objects.all()
+    queryset = models.Record.objects.all().order_by('-create_timestamp')
     serializer_class = serializers.RecordSerializer
     filter_backends = (DjangoFilterBackend, )
     filter_class = filter.RecordFilter
