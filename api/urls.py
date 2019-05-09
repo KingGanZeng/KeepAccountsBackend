@@ -23,6 +23,7 @@ urlpatterns = [
     path('getSpecialBookList', views.SpecialBookList.as_view()),
     path('changeSpecialBook/<int:s_book_id>', views.SpecialBookDetail.as_view()),
     path('addSpecialBookItem', views.SpecialBookUpdate.as_view()),
+    path('getAllBookMoneyList', views.AllBookMoneyList.as_view()),
     # 小组相关API
     path('createGroupMember', views.GroupCreate.as_view({'post': 'create'})),
     path('getGroupMembers', views.GroupList.as_view()),

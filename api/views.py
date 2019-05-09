@@ -70,6 +70,59 @@ class RecordList(mixins.CreateModelMixin,
     filter_class = filter.RecordFilter
 
 
+# 根据uid获取用户场景记账信息
+class AllBookMoneyList(generics.ListAPIView):
+    def get(self, request, *args, **kwargs):
+        user_params = request.query_params.dict()
+        book = models.SpecialBook.objects.filter(uid=user_params['uid'])
+        serialized_book = serializers.SpecialBookSerializer(book, many=True)
+        serialized_book = serialized_book.data
+        book_type_money_set = dict()
+        for book_item in serialized_book:
+            item_list = book_item['book']
+            book_type = book_item['book_type']
+            for item in item_list:
+                time_min = user_params['min_time']
+                time_max = user_params['max_time']
+                tmp_item = models.Record.objects.filter(book_id=item, create_timestamp__range=[time_min, time_max])
+                serialized_item = serializers.RecordSerializer(tmp_item, many=True)
+                serialized_item = serialized_item.data
+                for record_item in serialized_item:
+                    record_type = record_item['record_type']
+                    money = float(record_item['money'])
+                    # if book_type_money
+                    if book_type in book_type_money_set.keys():
+                        if record_type == 'expense':
+                            book_type_money_set[book_type] = {
+                                'title': book_type,
+                                'income': book_type_money_set[book_type]['income'],
+                                'expense': book_type_money_set[book_type]['expense'] + money,
+                            }
+                        else:
+                            book_type_money_set[book_type] = {
+                                'title': book_type,
+                                'income': book_type_money_set[book_type]['income'] + money,
+                                'expense': book_type_money_set[book_type]['expense'],
+                            }
+                    else:
+                        if record_type == 'expense':
+                            book_type_money_set[book_type] = {
+                                'title': book_type,
+                                'income': 0,
+                                'expense': money,
+                            }
+                        else:
+                            book_type_money_set[book_type] = {
+                                'title': book_type,
+                                'income': money,
+                                'expense': 0,
+                            }
+        return Response({
+            'total': len(book_type_money_set),
+            'book_type_money_set': book_type_money_set,
+        }, status=status.HTTP_200_OK)
+
+
 # 根据账本id查询项目及账单信息
 class AllBookItemRecordList(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
