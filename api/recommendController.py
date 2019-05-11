@@ -105,5 +105,5 @@ def my_job():
 
 
 sched = BlockingScheduler()
-sched.add_job(my_job, 'interval', seconds=5)
+sched.add_job(my_job, 'interval', seconds=300)
 sched.start()

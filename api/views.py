@@ -1,4 +1,5 @@
 # from django.shortcuts import render
+import json
 from django.utils import timezone
 from . import models
 from . import filter
@@ -70,8 +71,73 @@ class RecordList(mixins.CreateModelMixin,
     filter_class = filter.RecordFilter
 
 
-# 根据uid获取用户场景记账信息
-class AllBookMoneyList(generics.ListAPIView):
+
+class AllBookMoneyList(generics.ListCreateAPIView):
+    # 根据item_list获取首页记账信息
+    def post(self, request, *args, **kwargs):
+        book_id = request.POST.get('book_id')
+        print(request)
+        book = models.SpecialBook.objects.filter(s_book_id=book_id)
+        serialized_book = serializers.SpecialBookSerializer(book, many=True)
+        serialized_book = serialized_book.data
+        print(book_id, serialized_book)
+        if len(serialized_book) == 0:
+            return Response({
+                'specialBookId': book_id,
+                'expense': 0,
+                'income': 0,
+                'item_count': 0,
+                'record_count': 0,
+                'bookArr': []
+            }, status=status.HTTP_200_OK)
+        serialized_book = serialized_book[0]
+        item_list = serialized_book['book']
+        min_time = request.POST.get('create_timestamp_min')
+        max_time = request.POST.get('create_timestamp_max')
+        item_record_arr = []
+        item_count = 0
+        record_count = 0
+        total_expense = 0
+        total_income = 0
+        for item_id in item_list:
+            item = models.Book.objects.filter(book_id=item_id)
+            serialized_item = serializers.BookSerializer(item, many=True)
+            serialized_item = serialized_item.data[0]
+            tmp_record = models.Record.objects.filter(book_id=item_id, create_timestamp__range=[min_time, max_time])
+            serialized_record = serializers.RecordSerializer(tmp_record, many=True)
+            serialized_record = serialized_record.data
+            inner_expense = 0
+            inner_income = 0
+            record_arr = []
+            item_count += 1
+            for record_item in serialized_record:
+                record_count += 1
+                if record_item['record_type'] == 'expense':
+                    inner_expense += float(record_item['money'])
+                    total_expense += float(record_item['money'])
+                else:
+                    inner_income += float(record_item['money'])
+                    total_income += float(record_item['money'])
+                record_arr.append(record_item)
+            item_record_arr.append({
+                'bookId': item_id,
+                'innerBookInfo': serialized_item,
+                'innerExpense': inner_expense,
+                'innerIncome': inner_income,
+                'recordArr': record_arr,
+                'thumbnail': record_arr[0:3],
+            })
+        return Response({
+            'specialBookId': book_id,
+            'expense': total_expense,
+            'income': total_income,
+            'item_count': item_count,
+            'record_count': record_count,
+            'bookArr': item_record_arr
+        }, status=status.HTTP_200_OK)
+
+
+    # 根据uid获取用户场景记账信息
     def get(self, request, *args, **kwargs):
         user_params = request.query_params.dict()
         book = models.SpecialBook.objects.filter(uid=user_params['uid'])
@@ -90,7 +156,6 @@ class AllBookMoneyList(generics.ListAPIView):
                 for record_item in serialized_item:
                     record_type = record_item['record_type']
                     money = float(record_item['money'])
-                    # if book_type_money
                     if book_type in book_type_money_set.keys():
                         if record_type == 'expense':
                             book_type_money_set[book_type] = {
