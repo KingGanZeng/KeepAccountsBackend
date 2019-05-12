@@ -204,7 +204,10 @@ class AllBookItemRecordList(generics.ListAPIView):
         if time_past_month == 1:
             time_past_year = int(time_now.split('-')[0]) - 1
             time_past_month = 12
+        else:
+            time_past_month = time_past_month - 1
         time_past_month_now = str(time_past_year) + '-' + str(time_past_month) + '-' + time_now.split('-')[2]
+        print(time_past_month_now, time_now)
 
         for item in item_list:
             tmp_item = models.Record.objects.filter(book_id=item, create_timestamp__range=[time_past_month_now, time_now])
